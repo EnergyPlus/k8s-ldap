@@ -1,0 +1,6 @@
+---
+
+- name: Create ldap service in k8s cluster
+  hosts: masters
+  roles:
+    - role: k8s-ldap
