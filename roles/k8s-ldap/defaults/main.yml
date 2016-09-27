@@ -1,0 +1,15 @@
+---
+# defaults file for k8s-ldap
+
+# By default it will install the service, not delete it
+delete_ldap: false
+
+# Two options:
+#   - NodePort, if the deployment is a internal server or virutal machine.
+#   - LoadBalancer, if the deployment is on cloud.
+jupyterhub_ldap_admin_type: 'NodePort'
+
+# define path to ldap container related files
+jupyterhub_ldap_folder: /tmp
+
+jupyterhub_ldap_k8s_file: "{{ jupyterhub_ldap_folder }}/ldap.yaml"

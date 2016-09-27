@@ -1,0 +1,57 @@
+kind: Deployment
+metadata:
+kind: Deployment
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: jupyterhub-ldap
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: jupyterhub-ldap
+    spec:
+      containers:
+      - name: openldap
+        image: osixia/openldap
+        ports:
+          - containerPort: 389
+          - containerPort: 636
+      - name: phpldapadmin
+        image: osixia/phpldapadmin
+        ports:
+          - containerPort: 80
+        env:
+        - name: PHPLDAPADMIN_HTTPS
+          value: "false"
+        - name: PHPLDAPADMIN_LDAP_HOSTS
+          value: localhost
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jupyterhub-ldap
+spec:
+  ports:
+  - name: ldap
+    port: 389
+    targetPort: 389
+  - name: ldap-ssl
+    port: 636
+    targetPort: 636
+  selector:
+    app: jupyterhub-ldap
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jupyterhub-ldap-admin
+spec:
+  type: {{ jupyterhub_ldap_admin_type }}
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: jupyterhub-ldap

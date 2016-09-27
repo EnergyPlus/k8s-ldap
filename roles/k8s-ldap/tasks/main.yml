@@ -1,0 +1,38 @@
+---
+- name: Check if file exists
+  stat:
+    path={{ jupyterhub_ldap_k8s_file }}
+  register: ldap_file
+  tags:
+    - create_service
+    - configure
+
+- name: If file exists delete it
+  file:
+    path={{ jupyterhub_ldap_k8s_file }}
+    state=absent
+  tags:
+    - create_service
+    - configure
+
+- name: Deploy template in place
+  template:
+    src=ldap.yaml.j2
+    dest={{ jupyterhub_ldap_k8s_file }}
+  tags:
+    - create_service
+    - configure
+
+- name: install_ldap.yml
+  raw: "kubectl create -f {{ jupyterhub_ldap_k8s_file }}"
+  when: "{{ not delete_ldap }}"
+  tags:
+    - create_service
+    - configure
+
+# Delete the file
+- name: delete_ldap.yml
+  raw: "kubectl delete -f {{ jupyterhub_ldap_k8s_file }}"
+  when: "{{ delete_ldap }}"
+  tags:
+    - delete_service
