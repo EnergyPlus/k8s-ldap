@@ -6,5 +6,5 @@ FILE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TAGS="create_service,configure_service"
 
 ansible-playbook \
-  -i ${inventory} ${PLAYBOOKS_DIR}/ldap-service.yml \
-  --tags=${TAGS} "$@"
+  -i ${inventory} ${PLAYBOOKS_DIR}/ldap-service.yml "$@"
+  # --tags=${TAGS} 

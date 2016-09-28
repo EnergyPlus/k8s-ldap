@@ -7,5 +7,5 @@ TAGS="delete_service"
 
 ansible-playbook \
   -i ${inventory} ${PLAYBOOKS_DIR}/ldap-service.yml \
-  --tags=${TAGS}                                    \
   --extra-vars "delete_ldap=true" "$@"
+  # --tags=${TAGS}                                    \
